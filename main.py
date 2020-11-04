@@ -21,6 +21,15 @@ def get_data():
         print(d['data'][x]['geometry']['coordinates'])
     return render_template('index.html',d=d)
 
+@app.route('/geodata/', methods=['POST'])
+def foo():
+    print('post')
+
+
+@app.route('/geodata', methods=['PUT'])
+def foo():
+    print('put')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=105)
