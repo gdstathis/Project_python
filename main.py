@@ -13,13 +13,14 @@ def welcome():
 
 @app.route('/geodata', methods=['GET'])
 def get_data():
-    data=requests.get('http://localhost:8010/route.json')
-    d=data.json()
+    data = requests.get('http://localhost:8010/route.json')
+    d = data.json()
 
     for x in range(len(d['data'])):
         print(d['data'][x]['properties'])
         print(d['data'][x]['geometry']['coordinates'])
-    return render_template('index.html',d=d)
+    return render_template('index.html', d=d, len=len(d['data']))
+
 
 @app.route('/geodata/', methods=['POST'])
 def foo():
@@ -27,7 +28,7 @@ def foo():
 
 
 @app.route('/geodata', methods=['PUT'])
-def foo():
+def foo2():
     print('put')
 
 
