@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Add </title>
+</head>
+<body>
+{% block content %}
+<div class="container py=4">
+
+<h2>Add Record</h2>
+<form class="p-3 mx-auto form-group" action="" method="post">
+    <div class="form-group">
+        <div class="form-group  required">
+            <label class="control-label" for="name">Name</label>
+            <input autocomplete="off" class="input-sm" id="name" name="name" required="" type="text"
+                   value="">
+
+        </div>
+        <p>
+        <div class="form-group  required">
+            <label class="control-label" for="lat">Latitude</label>
+            <input autocomplete="off" class="input-sm" id="latitude" name="lat" required="" type="text"
+                   value="">
+
+        </div>
+
+        </p>
+        <p>
+        <div class="form-group  required">
+            <label class="control-label" for="lon">Name</label>
+            <input autocomplete="off" class="input-sm" id="lon" name="lon" required="" type="text"
+                   value="">
+
+        </div>
+        </p>
+        <div class="form-group">
+            {{ form.submit(class="btn-sm btn-primary form-control ") }}
+        </div>
+    </div>
+</form>
+</div>
+{% endblock %}
+</body>
+</html>
