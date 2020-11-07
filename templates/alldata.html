@@ -18,52 +18,50 @@
     <title>index.html</title>
 </head>
 <body>
-<div class="table-responsive">
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Longitude</th>
-            <th scope="col">Latitude</th>
-        </tr>
-        </thead>
+<div class="container">
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Longitude</th>
+                <th scope="col">Latitude</th>
+            </tr>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-        <!-- Display data from API -->
-        {%for x in range(0, lenapi)%}
-        <tr>
-            <th scope="row">1</th>
-            <td>{{data_api['data'][x]['properties']['name']}}</td>
-            <td>{{data_api['data'][x]['geometry']['coordinates'][0]}}</td>
-            <td>{{data_api['data'][x]['geometry']['coordinates'][0]}}</td>
-        </tr>
-        {%endfor%}
+            <!-- Display data from API -->
+            {%for x in range(0, lenapi)%}
+            <tr>
+                <td>{{data_api['data'][x]['properties']['name']}}</td>
+                <td>{{data_api['data'][x]['geometry']['coordinates'][0]}}</td>
+                <td>{{data_api['data'][x]['geometry']['coordinates'][0]}}</td>
+            </tr>
+            {%endfor%}
 
-        <thead class="thead-light">
-        <tr class="table-secondary">
-            <th class="table-secondary" scope="col">#</th>
-            <th class="table-secondary" scope="col">Name</th>
-            <th class="table-secondary" scope="col">Lat</th>
-            <th class="table-secondary" scope="col">Lon</th>
-        </tr>
-        </thead>
+            <thead class="thead-light">
+            <tr class="table-secondary">
+                <th class="table-secondary" scope="col">Name</th>
+                <th class="table-secondary" scope="col">Lat</th>
+                <th class="table-secondary" scope="col">Lon</th>
+            </tr>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-        <!-- Display data from database -->
-        {%for x1 in range(0, lendb)%}
-        <tr>
-            <th scope="row">1</th>
-            <td> {{data_db[x1][1]}}</td>
-            <td>{{data_db[x1][2]}}</td>
-            <td>{{data_db[x1][3]}}</td>
-        </tr>
-        {%endfor%}
+            <!-- Display data from database -->
+            {%for x1 in range(0, lendb)%}
+            <tr>
+                <td> {{data_db[x1][1]}}</td>
+                <td>{{data_db[x1][2]}}</td>
+                <td>{{data_db[x1][3]}}</td>
+            </tr>
+            {%endfor%}
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>
