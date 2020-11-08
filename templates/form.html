@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Add </title>
+
+</head>
+<body>
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+<div class="container">
+
+    {% if f==0%}
+    <div class="alert alert-danger">
+        <strong>Fail!</strong> Does not found
+    </div>
+    {% endif%}
+
+    <!--        {% if f==1%}-->
+    <!--    <div class="alert alert-success">-->
+    <!--        <strong>Success!</strong> Record saved success in database-->
+    <!--    </div>-->
+    <!--    {% endif%}-->
+
+    {% if suc==1%}
+    <div class="alert alert-success">
+        <strong>Success!</strong> Record saved success in database
+    </div>
+    {% endif%}
+
+    {% if suc==0%}
+    <div class="alert alert-success">
+        <strong>Success!</strong> Record saved success in database
+    </div>
+    {% endif%}
+
+    <form method="POST" action='\geodata\'>
+        {{ form.csrf_token }}
+        <dl>
+            <div>
+                {{ wtf.form_field(form.name, class='form-control', type="text", id="name",
+                placeholder='Name') }}
+            </div>
+
+            <div>
+                {{ wtf.form_field(form.lat, class='form-control', type="number", step="any" ,min="-91", max="91",
+                placeholder='Insert Latitude') }}
+            </div>
+
+            <div>
+                {{ wtf.form_field(form.lon, class='form-control', type="number", step="any" ,min="-181", max="181",
+                placeholder='Insert Longitude') }}
+            </div>
+
+            <div class="form-group">
+                {{ form.submit(class="btn-sm btn-primary form-control",onclick="validateForm()" ) }}
+
+            </div>
+        </dl>
+    </form>
+</div>
+{% endblock %}
+
+</body>
+</html>
