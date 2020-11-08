@@ -14,46 +14,84 @@
     <title>Add </title>
 </head>
 <body>
+
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block content %}
-<div class="container py=4">
+{% if res==1%}
+<div class="alert alert-primary" role="alert">
+  Record saved succesfull
+</div>
+{% endif%}
 
-    <h2 class="text-center">Add a new coordinate record</h2>
-    <form class="p-3 mx-auto form-group" action="" method="post">
-        <div class="form-group">
-            <div class="form-group  required">
-                <!--            <label class="control-label" for="name">Name</label>-->
-                <!--            <input autocomplete="off" class="input-sm" id="name" name="name" required="" type="text"-->
-                <!--                   value="">-->
-                {{form.name.label(class="form-control-label", for="name",)}}
-                {{ form.name(placeholder="Enter name" ,class="form-control", id="name", minlength="8") }}
-
+<div class="container">
+    <form method="POST" action='\geodata\'>
+        {{ form.csrf_token }}
+        <dl>
+            <div>
+                {{ wtf.form_field(form.name, class='form-control', type="text",
+                placeholder='Name') }}
             </div>
-            <p>
-            <div class="form-group  required">
-                <!--            <label class="control-label" for="lat">Latitude</label>-->
-                <!--            <input autocomplete="off" class="input-sm" id="latitude" name="lat" required="" type="text"-->
-                <!--                   value="">-->
-                {{form.lat.label(class="form-control-label", for="lat")}}
-                {{ form.lat(placeholder="Enter Latitude" ,class="form-control", id="lat", type=number, min="1") }}
-
+            <div>
+                {{ wtf.form_field(form.lat, class='form-control', type="number", step="any" ,min="-91", max="91",
+                placeholder='Insert Latitude') }}
+            </div>
+            <div>
+                {{ wtf.form_field(form.lon, class='form-control', type="number", step="any" ,min="-181", max="181",
+                placeholder='Insert Longitude') }}
             </div>
 
-            </p>
-            <p>
-            <div class="form-group  required">
-                {{form.lon.label(class="form-control-label", for="lon")}}
-                {{ form.lon(placeholder="Enter Longitude" ,class="form-control", id="lon") }}
+<!--    <input type="submit" value="Submit">-->
 
-
-            </div>
-            </p>
             <div class="form-group">
-                {{ form.submit(class="btn-sm btn-primary form-control ") }}
+                {{ form.submit(class="btn-sm btn-primary form-control",) }}
             </div>
-
-        </div>
+        </dl>
     </form>
 </div>
+<!--<div class="container py=4">-->
+
+<!--    <h2 class="text-center">Add a new coordinate record</h2>-->
+<!--    <form class="p-3 mx-auto form-group" action="\geodata\" method="POST">-->
+
+
+<!--        <div class="form-group">-->
+<!--            <div class="form-group  required">-->
+<!--                &lt;!&ndash;            <label class="control-label" for="name">Name</label>&ndash;&gt;-->
+<!--                &lt;!&ndash;            <input autocomplete="off" class="input-sm" id="name" name="name" required="" type="text"&ndash;&gt;-->
+<!--                &lt;!&ndash;                   value="">&ndash;&gt;-->
+<!--                {{form.name.label(class="form-control-label", for="name")}}-->
+<!--                {{ form.name(placeholder="Enter name" ,class="form-control", id="name",  ) }}-->
+
+<!--            </div>-->
+<!--            <p>-->
+<!--            <div class="form-group  required">-->
+<!--                &lt;!&ndash;            <label class="control-label" for="lat">Latitude</label>&ndash;&gt;-->
+<!--                &lt;!&ndash;            <input autocomplete="off" class="input-sm" id="latitude" name="lat" required="" type="text"&ndash;&gt;-->
+<!--                &lt;!&ndash;                   value="">&ndash;&gt;-->
+<!--                {{form.lat.label(class="form-control-label", for="lat")}}-->
+<!--                {{ form.lat(placeholder="Enter Latitude" ,class="form-control", id="lat", type=number, min="1") }}-->
+
+<!--            </div>-->
+
+<!--            </p>-->
+<!--            <p>-->
+<!--            <div class="form-group  required">-->
+<!--                {{form.lon.label(class="form-control-label", for="lon")}}-->
+<!--                {{ form.lon(placeholder="Enter Longitude" ,class="form-control", id="lon") }}-->
+
+
+<!--            </div>-->
+<!--            </p>-->
+<!--            <div class="form-group">-->
+<!--                {{ form.submit(class="btn-sm btn-primary form-control") }}-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </form>-->
+
+<!--</div>-->
 {% endblock %}
 </body>
 </html>

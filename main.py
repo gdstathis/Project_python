@@ -3,12 +3,12 @@ import sqlite3
 from flask import Flask, render_template, request, make_response, flash, url_for
 from pip._vendor import requests
 from werkzeug.utils import redirect
-
+from flask_bootstrap import  Bootstrap
 from form import AddForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '1234'
-
+Bootstrap(app)
 
 def db_connection():
     conn = sqlite3.connect("PhotoCoordinates.db")
@@ -57,10 +57,10 @@ def get_data_from_db():
 def create():
     result = False
     form = AddForm(request.form)
-    if form.validate_on_submit():
-        flash("Success")
-        return redirect(url_for("add.html"))
-    if request.method == 'POST':
+    if not form.validate():
+        return render_template('add.html', form=form)
+    if request.method == 'POST' and form.validate():
+        print("SDssd")
         try:
             lat_range = range(-90, 90)
             lon_range = range(-180, 180)
@@ -68,16 +68,19 @@ def create():
             name = request.form.get("name")
             lat = request.form.get("lat")
             lon = request.form.get("lon")
-            if not name or not lat or not abs(float(lat)) < 90:
-                return make_response("Bad Request", 400)
+            if not name or not lat or not abs(float(lat)) < 90 or not abs(float(lon)):
+                error_statement="All error"
+                return render_template('fail.html',error_statement=error_statement)
+                #return make_response(render_template('fail.html',error_statement=error_statement),"BadRequest", 400)
             conn = sqlite3.connect("projectdb.db")
             cursor = conn.cursor()
             conn.execute('INSERT INTO PhotosCoordinates (name,lot, lan) VALUES (?,?,?)'
                          , (name, lat, lon))
             conn.commit()
-            print("Table created successfully")
+            print("Record created successfully")
             result = True
-            return make_response("Created", 201)
+            render_template('success.html')
+            return make_response("Created record", 201)
         except:
             conn.rollback()
             return make_response("Bad Request", 400)
