@@ -12,25 +12,34 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Add </title>
+
 </head>
 <body>
 
+
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-
 {% block content %}
-{% if res==1%}
-<div class="alert alert-primary" role="alert">
-  Record saved succesfull
-</div>
-{% endif%}
+
+
 
 <div class="container">
+{% if suc==1%}
+<div class="alert alert-success">
+  <strong>Success!</strong> Record saved success in database
+</div>
+{% endif%}
+{% if suc==0%}
+<div class="alert alert-success">
+  <strong>Success!</strong> Record saved success in database
+</div>
+{% endif%}
     <form method="POST" action='\geodata\'>
+
         {{ form.csrf_token }}
         <dl>
             <div>
-                {{ wtf.form_field(form.name, class='form-control', type="text",
+                {{ wtf.form_field(form.name, class='form-control', type="text", id="name",
                 placeholder='Name') }}
             </div>
             <div>
@@ -40,16 +49,25 @@
             <div>
                 {{ wtf.form_field(form.lon, class='form-control', type="number", step="any" ,min="-181", max="181",
                 placeholder='Insert Longitude') }}
+
             </div>
 
-<!--    <input type="submit" value="Submit">-->
+            <!--    <input type="submit" value="Submit">-->
 
             <div class="form-group">
-                {{ form.submit(class="btn-sm btn-primary form-control",) }}
+                {{ form.submit(class="btn-sm btn-primary form-control",onclick="validateForm()" ) }}
+
             </div>
         </dl>
     </form>
+
+
+
 </div>
+<!--<script>submit=document.getElementById('submit')-->
+<!--var name=document.getElementById('name')-->
+<!--submit.onclick=function(){alert(name.data); }-->
+<!--</script>-->
 <!--<div class="container py=4">-->
 
 <!--    <h2 class="text-center">Add a new coordinate record</h2>-->

@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, make_response, flash, url_for
 from pip._vendor import requests
 from werkzeug.utils import redirect
 from flask_bootstrap import  Bootstrap
-from form import AddForm
+from form import AppForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '1234'
@@ -56,7 +56,7 @@ def get_data_from_db():
 # Inform user if the submition has been corrected or not
 def create():
     result = False
-    form = AddForm(request.form)
+    form = AppForm(request.form)
     if not form.validate():
         return render_template('add.html', form=form)
     if request.method == 'POST' and form.validate():
@@ -68,6 +68,8 @@ def create():
             name = request.form.get("name")
             lat = request.form.get("lat")
             lon = request.form.get("lon")
+            if form.validate():
+                flash("You have succesfully signed up!")
             if not name or not lat or not abs(float(lat)) < 90 or not abs(float(lon)):
                 error_statement="All error"
                 return render_template('fail.html',error_statement=error_statement)
@@ -79,11 +81,12 @@ def create():
             conn.commit()
             print("Record created successfully")
             result = True
-            render_template('success.html')
-            return make_response("Created record", 201)
+
+            return make_response(render_template('add.html',form=form,suc=1), 201)
         except:
             conn.rollback()
-            return make_response("Bad Request", 400)
+            return make_response(render_template('add.html', form=form, suc=0), 400)
+            #return make_response("Bad Request", 400)
         finally:
             print("End connection")
             # if (result == True):
@@ -91,42 +94,58 @@ def create():
             # else:
             #     return render_template('prompt.html', result=result)
 
-    return render_template('add.html', form=form)
+    return render_template('add.html', form=form, suc=1)
 
 
-@app.route('/geodata/<id>', methods=['PUT'])
+@app.route('/geodata/<id>', methods=["PUT","GET"])
 def update(id):
-    if request.method == 'PUT':
-        # req_Json = request.form.json
-        name = request.json.get("name")
-        lat = request.json.get("lat")
-        lon = request.json.get("lon")
-        if not name or not lat or not lon:
-            return "Bad request"
-        print("Update start")
-        print(name)
-        try:
-            # req = request.form
-            # name = request.form.get("name")
-            # lat = request.form.get("lat")
-            # lon = request.form.get("lon")
-            # print(name)
-            conn = sqlite3.connect("projectdb.db")
-            cursor = conn.cursor()
-            print("Update start")
-            l = conn.execute('UPDATE PhotosCoordinates SET name=? WHERE id=?', (["nam2", id]))
-            conn.commit()
-            print("Update successfully")
-            print("Table updated successfully")
-            return "ok"
-        except Exception as e:
-            print(e)
-            return request("200")
-        finally:
-            return "something"
-            conn.close()
+    form = AppForm(request.form)
+    req = request.form
+    name = request.form.get("name")
+    lat = request.form.get("lat")
+    lon = request.form.get("lon")
 
-        return render_template('create.html')
+    print(name)
+    return render_template('add.html',form=form)
+
+    # form = AppForm(request.form)
+    #
+    # if request.method == 'PUT':
+    #     # req_Json = request.form.json
+    #     name = request.json.get("name")
+    #     lat = request.json.get("lat")
+    #     lon = request.json.get("lon")
+    #     if not name or not lat or not lon:
+    #         return "Bad request"
+    #     print("Update start")
+    #     print(name)
+    #     try:
+    #         # req = request.form
+    #         # name = request.form.get("name")
+    #         # lat = request.form.get("lat")
+    #         # lon = request.form.get("lon")
+    #         # print(name)
+    #         conn = sqlite3.connect("projectdb.db")
+    #         cur = conn.cursor()
+    #         print("Connected to sqlite for delete")
+    #         c = cur.execute('SELECT COUNT(*) FROM PhotosCoordinates WHERE id = ?', [id]).rowcount
+    #         c = cur.fetchone()[0]
+    #         if (c==0):
+    #             return make_response("Not Found",404)
+    #         print("Update start")
+    #         l = conn.execute('UPDATE PhotosCoordinates SET name=? WHERE id=?', (["nam2", id]))
+    #         conn.commit()
+    #         print("Update successfully")
+    #         print("Table updated successfully")
+    #         return "ok"
+    #     except Exception as e:
+    #         print(e)
+    #         return request("200")
+    #     finally:
+    #         return "something"
+    #         conn.close()
+    #
+    #     return render_template('add.html',form=form)
 
 
 @app.route('/geodata/<id>', methods=['DELETE'])
