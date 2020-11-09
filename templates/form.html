@@ -11,7 +11,7 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <title>Add </title>
+    <title>Project </title>
 
 </head>
 <body>
@@ -19,7 +19,15 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-
+{% block title %}
+<div class="container">
+    {% if add==1%}
+    <h2 align="center">Add a new record</h2>
+    {%else%}
+    <h2 align="center">Update a record</h2>
+    {% endif%}
+</div>
+{% endblock %}
 <div class="container">
 
     {% if f==0%}
@@ -28,12 +36,6 @@
     </div>
     {% endif%}
 
-    <!--        {% if f==1%}-->
-    <!--    <div class="alert alert-success">-->
-    <!--        <strong>Success!</strong> Record saved success in database-->
-    <!--    </div>-->
-    <!--    {% endif%}-->
-
     {% if suc==1%}
     <div class="alert alert-success">
         <strong>Success!</strong> Record saved success in database
@@ -41,12 +43,39 @@
     {% endif%}
 
     {% if suc==0%}
-    <div class="alert alert-success">
-        <strong>Success!</strong> Record saved success in database
+    <div class="alert alert-danger">
+        <strong>Fail!</strong> Record fail to saved in database
     </div>
     {% endif%}
 
-    <form method="POST" action='\geodata\'>
+    {% if suc2==1%}
+    <div class="alert alert-success">
+        <strong>Success!</strong> Record updated success in database
+    </div>
+    {% endif%}
+
+    {% block form %}
+    <script>
+    function validateForm(name,lot,lan) {
+    if (name.length<4 && name.length>50)
+       alert("Please insert a valid name. Name length must be between 4 and 50 characters")
+    if (Math.abs(this.lat.value)>90 || Math.abs(this.lon.value)>180)
+       console.log("Invalid latitude or longitude")
+     }
+
+    function validateLongitude(lon) {
+    if (Math.abs(this.lon.value)>180)
+       console.log("Invalid longitude")
+    }
+    function validateLatitude(lat) {
+    if (Math.abs(this.lat.value)>90)
+       console.log("Invalid latitude")
+    }
+    </script>
+    <!-- The same form for adding and updating a record
+     html validation, simple js validation with error message in console and
+     validation from flask wtforms-->
+    <form action='' method="POST" onsubmit="validateForm(this.name.value,this.lat.value,this.lon.value)">
         {{ form.csrf_token }}
         <dl>
             <div>
@@ -55,22 +84,24 @@
             </div>
 
             <div>
-                {{ wtf.form_field(form.lat, class='form-control', type="number", step="any" ,min="-91", max="91",
+                {{ wtf.form_field(form.lat, class='form-control', type="number",step="any" ,min="-100", max="100",
+                onblur="validateLatitude(this.lat)",
                 placeholder='Insert Latitude') }}
             </div>
-
             <div>
-                {{ wtf.form_field(form.lon, class='form-control', type="number", step="any" ,min="-181", max="181",
+                {{ wtf.form_field(form.lon, class='form-control', type="number", step="any" ,min="-200", max="200",
+                onblur="validateLongitude(this.lon)",
                 placeholder='Insert Longitude') }}
             </div>
 
             <div class="form-group">
-                {{ form.submit(class="btn-sm btn-primary form-control",onclick="validateForm()" ) }}
-
+                {{ form.submit(class="btn-sm btn-primary form-control" ) }}
             </div>
         </dl>
     </form>
+    {% endblock form %}
 </div>
+
 {% endblock %}
 
 </body>
